@@ -113,6 +113,9 @@ def zonal_stats(asset_id, ini_date, end_date, band, polygon, categorical=False):
         # Get pixel size from the first image
         scale = image.select(0).projection().nominalScale()
         
-        computed_object = reduce_categorical(image) if categorical else reduce_continuos(image)
+        computed_object = ee.List(
+            [reduce_categorical(image) if categorical else reduce_continuos(image)]
+        )
+        
     
-    return computed_object.getInfo()
+    return computed_object.map(lambda x: ee.Feature(x).toDictionary()).getInfo()

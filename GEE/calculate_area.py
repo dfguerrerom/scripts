@@ -92,29 +92,27 @@ def zonal_stats(asset_id, ini_date, end_date, band, polygon, categorical=False):
     
     if source_type == "IMAGE_COLLECTION":
         
-        ee_object = ee.ImageCollection(asset_id)
-
-        dataset = (ee_object
+        image_collection = (
+            ee.ImageCollection(asset_id)
               .filter(ee.Filter.date(ini_date, end_date))
               .select(band)
         )
 
-        # Calculate pixel size
-        scale = dataset.first().projection().nominalScale()
-
-        if categorical: 
-            return ee.FeatureCollection(dataset.map(reduce_categorical)).toList(dataset.size()).getInfo()
-        else:
-            return ee.FeatureCollection(dataset.map(reduce_continuos)).toList(dataset.size()).getInfo()
+        # Get pixel size from the first image
+        scale = image_collection.first().projection().nominalScale()
+        
+        # Use the proper reduce region function depending on the image type
+        computed_object = ee.FeatureCollection(
+            image_collection.map(reduce_categorical if categorical else reduce_continuos)
+        ).toList(image_collection.size())
     
     elif source_type == "IMAGE":
         
-        dataset = ee.Image(asset_id)
+        image = ee.Image(asset_id)
         
-        # Calculate pixel size
-        scale = dataset.select(0).projection().nominalScale()
-
-        if categorical: 
-            return reduce_categorical(image).getInfo()
-        else:
-            return reduce_continuos(image).getInfo()
+        # Get pixel size from the first image
+        scale = image.select(0).projection().nominalScale()
+        
+        computed_object = reduce_categorical(image) if categorical else reduce_continuos(image)
+    
+    return computed_object.getInfo()

@@ -1,0 +1,38 @@
+{
+    "elevation" : {
+        "source": "https://developers.google.com/earth-engine/datasets/catalog/CGIAR_SRTM90_V4",
+        "band": "elevation", 
+        "data_type": "continuous",
+        "description": "Shuttle Radar Topography Mission (SRTM) digital elevation dataset with 3 arc second (approx. 90m) spatial resolution. The vertical error of the DEM’s is reported to be less than 16m."
+    },
+    "temperature" : {
+        "source": "https://developers.google.com/earth-engine/datasets/catalog/ECMWF_ERA5_MONTHLY",
+        "band": "mean_2m_air_temperature",
+        "data_type": "continuous",
+        "description": "ERA5 is the fifth generation ECMWF atmospheric reanalysis of the global climate. Monthly aggregates have been calculated based on the ERA5 hourly temperature values."
+    },
+    "rainfall" : {
+        "source" : "https://developers.google.com/earth-engine/datasets/catalog/UCSB-CHG_CHIRPS_PENTAD",
+        "band": "precipitation",
+        "data_type": "continuous",
+        "description": "Climate Hazards Group InfraRed Precipitation with Station data (CHIRPS). Te dataset incorporates 0.05° resolution satellite imagery with in-situ station data to create gridded rainfall time series for trend analysis and seasonal drought monitoring."
+    },
+    "climate_domain" : {
+        "source" : "http://koeppen-geiger.vu-wien.ac.at/present.htm",
+        "band": "TBD",
+        "data_type": "TBD",
+        "description": "TBD"
+    },
+    "tree_cover" : {
+        "source": "https://developers.google.com/earth-engine/datasets/catalog/COPERNICUS_Landcover_100m_Proba-V-C3_Global",
+        "band": "tree-coverfraction",
+        "data_type": "continuous",
+        "description": "Dynamic Land Cover map at 100 m resolution (CGLS-LC100). Provides the percent vegetation cover for forest land cover class using PROBA-V 100 m time-series."
+    },
+    "land_cover" : {
+        "source": "https://developers.google.com/earth-engine/datasets/catalog/COPERNICUS_Landcover_100m_Proba-V-C3_Global",
+        "band": "discrete_classification",
+        "data_type": "discrete",
+        "description": "Dynamic Land Cover map at 100 m resolution (CGLS-LC100). Provides provides a primary land cover scheme using PROBA-V 100 m time-series."
+    }
+}

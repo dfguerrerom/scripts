@@ -1,4 +1,5 @@
 import ee
+import json
 ee.Initialize()
 
 def zonal_stats(asset_id, ini_date, end_date, band, polygon, categorical=False):
@@ -12,15 +13,26 @@ def zonal_stats(asset_id, ini_date, end_date, band, polygon, categorical=False):
         end_date (string): Stop date to filter collection in format %YYYY-mm-dd
         band (string): Name of the band which cotains the target variable
         statistic (string): Reduction statistic to reduce results when using 
-        polygon (list): geometry boundary to limit the analysis
+        polygon (geojson, str): geojson geometry
         
-        polygon = [
-            [[-75.081688, 6.072885],
-            [-75.050185, 6.12395],
-            [-75.144696, 6.121032],
-            [-75.158616, 6.040785],
-            [-75.081688, 6.072885]]
-        ]
+        {
+            "type": "MultiPolygon", 
+            "coordinates": [
+                [[
+                    [11.9948265434602, 42.6145920085208],
+                    [12.1055223772636, 42.8544329817615],
+                    [12.3638126561382, 42.9559041627479],
+                    [11.9948265434602, 42.6145920085208]
+                ]],
+                [[
+                    [10.7894737734482, 43.4906610302986],
+                    [10.9250456000997, 43.5387118043016],
+                    [11.0606174267511, 43.5867625783047],
+                    [10.7894737734482, 43.4906610302986]
+                ]]
+            ]
+        }
+
         
     """
     
@@ -85,9 +97,11 @@ def zonal_stats(asset_id, ini_date, end_date, band, polygon, categorical=False):
                     ["system_time_start", "system_time_end", "system_id"])
             ).rename(from_name, stats)
         )
-
     
-    geometry = ee.Geometry.Polygon(polygon)
+    # decode geojson
+    decoded_polygon = json.loads(polygon)
+    
+    geometry = ee.Geometry.MultiPolygon(decoded_polygon["coordinates"])
     source_type = ee.data.getAsset(asset_id)["type"]
     
     if source_type == "IMAGE_COLLECTION":

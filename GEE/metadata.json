@@ -61,7 +61,7 @@
                 "name": "discrete_classification",
                 "data_type": "discrete",
                 "description": "Dynamic Land Cover map at 100 m resolution (CGLS-LC100). Provides provides a primary land cover scheme using PROBA-V 100 m time-series.",
-                "units": "classes",
+                "units": "ha",
                 "scale": "100 m"
             }
         ]

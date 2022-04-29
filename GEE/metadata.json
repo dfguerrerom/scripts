@@ -1,12 +1,12 @@
 {
-    "method": {"title": "Data descriptions", "description": ""},
+    "method": {"title": "Calculation description", "description": "The statistics were calculated on the fly for the provided area of interest, using Google Earth Engine."},
     "elevation": {
         "source": "https://developers.google.com/earth-engine/datasets/catalog/CGIAR_SRTM90_V4",
         "band": [
             {
                 "name": "elevation",
                 "data_type": "continuous",
-                "description": "Shuttle Radar Topography Mission (SRTM) digital elevation dataset with 3 arc second (approx. 90m) spatial resolution. The vertical error of the DEM’s is reported to be less than 16m.",
+                "description": "Shuttle Radar Topography Mission (SRTM) digital elevation dataset with 3 arc second (approx. 90m) spatial resolution. The vertical error of the DEM’s is reported to be less than 16m. \n Reported mean, min and max values are calculated based on the polygon provided.",
                 "units": "m",
                 "scale": "90 m"
             }
@@ -18,7 +18,7 @@
             {
                 "name": "mean_2m_air_temperature",
                 "data_type": "continuous",
-                "description": "ERA5 is the fifth generation ECMWF atmospheric reanalysis of the global climate. Monthly aggregates have been calculated based on the ERA5 hourly temperature values.",
+                "description": "ERA5 is the fifth generation ECMWF atmospheric reanalysis of the global climate. Monthly aggregates have been calculated based on the ERA5 hourly temperature values. \n Reported temperature mean, min and max values are calculated based on the polygon provided to the mean air temperature.",
                 "units": "K",
                 "scale": "27830 m"
             }
@@ -30,7 +30,7 @@
             {
                 "name": "precipitation",
                 "data_type": "continuous",
-                "description": "Climate Hazards Group InfraRed Precipitation with Station data (CHIRPS). Te dataset incorporates 0.05° resolution satellite imagery with in-situ station data to create gridded rainfall time series for trend analysis and seasonal drought monitoring.",
+                "description": "Climate Hazards Group InfraRed Precipitation with Station data (CHIRPS). Te dataset incorporates 0.05° resolution satellite imagery with in-situ station data to create gridded rainfall time series for trend analysis and seasonal drought monitoring. \n Reported rainfall mean, min and max values are calculated based on the polygon provided.",
                 "units": "mm/pentad",
                 "scale": "5566 m"
             }

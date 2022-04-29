@@ -2,7 +2,23 @@ import ee
 import json
 ee.Initialize()
 
-def zonal_stats(asset_id, ini_date, end_date, band, polygon, categorical=False):
+def get_geometry(polygon=None, adm2_code=None):
+    
+    if not any([polygon, adm2_code]):
+        raise Exception("geojsson or gaul_code has to be passed")
+    
+    if polygon:
+        
+        # decode geojson
+        decoded_polygon = json.loads(polygon)
+        return ee.Geometry.MultiPolygon(decoded_polygon["coordinates"])
+    
+    return (
+        ee.FeatureCollection("FAO/GAUL/2015/level2")
+            .filter(ee.Filter.eq("ADM2_CODE", int(adm2_code)))
+    )
+
+def zonal_stats(asset_id, ini_date, end_date, band, polygon=None, adm2_code=None, categorical=False):
     """
     Calculate zonal statistics for each of the images in input ImageCollection
     
@@ -13,7 +29,8 @@ def zonal_stats(asset_id, ini_date, end_date, band, polygon, categorical=False):
         end_date (string): Stop date to filter collection in format %YYYY-mm-dd
         band (string): Name of the band which cotains the target variable
         statistic (string): Reduction statistic to reduce results when using 
-        polygon (geojson, str): geojson geometry
+        polygon (geojson, str): geojson geometry, mandatory if not adm2_code
+        adm2_code (str): FAO GAUL adm2_code, mandatory if not polygon
         
         {
             "type": "MultiPolygon", 
@@ -45,7 +62,8 @@ def zonal_stats(asset_id, ini_date, end_date, band, polygon, categorical=False):
           .reduceRegion(**{
             "reducer":ee.Reducer.sum().group(1), 
             "geometry":geometry,
-            "scale":scale
+            "scale": 1,
+            "bestEffort": True
           }
         )).get("groups")
         
@@ -98,10 +116,8 @@ def zonal_stats(asset_id, ini_date, end_date, band, polygon, categorical=False):
             ).rename(from_name, stats)
         )
     
-    # decode geojson
-    decoded_polygon = json.loads(polygon)
+    geometry = get_geometry(polygon, adm2_code)
     
-    geometry = ee.Geometry.MultiPolygon(decoded_polygon["coordinates"])
     source_type = ee.data.getAsset(asset_id)["type"]
     
     if source_type == "IMAGE_COLLECTION":
